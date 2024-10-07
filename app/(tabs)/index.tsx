@@ -1,85 +1,89 @@
-import { Image, StyleSheet, Platform, View, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { api } from '@/convex/_generated/api';
-import { useQuery } from 'convex/react';
-
+import { ThemedText } from '@/components/ThemedText';
+import ParallaxScrollView from '@/components/ParallaxScrollView';
+import { HelloWave } from '@/components/HelloWave';
 
 export default function HomeScreen() {
-  const tasks = useQuery(api.task.get);
+  const [quote, setQuote] = useState({ text: '', author: '' });
+
+  useEffect(() => {
+    fetchRandomQuote();
+  }, []);
+
+  const fetchRandomQuote = async () => {
+    try {
+      const response = await fetch('https://api.quotable.io/random');
+      const data = await response.json();
+      setQuote({ text: data.content, author: data.author });
+    } catch (error) {
+      console.error('Error fetching quote:', error);
+      setQuote({ text: 'Failed to fetch quote', author: 'Error' });
+    }
+  };
+
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
+      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
+      headerImage={<Ionicons size={310} name="chatbubble-ellipses" style={styles.headerImage} />}
+    >
+      <ThemedView style={styles.container}>
+        <ThemedView style={styles.welcomeContainer}>
+          <HelloWave />
+          <ThemedText type="title">Daily Inspiration</ThemedText>
+        </ThemedView>
+
+        <ThemedView style={styles.quoteContainer}>
+          <ThemedText type="defaultSemiBold" style={styles.quoteText}>
+            "{quote.text}"
+          </ThemedText>
+          <ThemedText style={styles.authorText}>- {quote.author}</ThemedText>
+        </ThemedView>
+
+        <ThemedView style={styles.buttonContainer}>
+          <ThemedText type="link" onPress={fetchRandomQuote}>
+            Get New Quote
+          </ThemedText>
+        </ThemedView>
       </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        {tasks?.map(({ _id, text }) => 
-          <ThemedText key={_id}>{text}</ThemedText> // Updated to use ThemedText
-        )}
-      </View>
     </ParallaxScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
+  container: {
+    flex: 1,
+    padding: 20,
+  },
+  headerImage: {
+    color: '#808080',
+    bottom: -90,
+    left: -35,
+    position: 'absolute',
+  },
+  welcomeContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    marginBottom: 20,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  quoteContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 10,
+    padding: 20,
+    marginBottom: 20,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  quoteText: {
+    fontSize: 18,
+    fontStyle: 'italic',
+    marginBottom: 10,
+  },
+  authorText: {
+    textAlign: 'right',
+  },
+  buttonContainer: {
+    alignItems: 'center',
   },
 });
