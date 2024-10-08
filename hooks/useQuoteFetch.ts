@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 const OPENAI_API_KEY = process.env.EXPO_PUBLIC_OPENAI_API_KEY;
 const MOTIVATIONAL_KEY = process.env.EXPO_PUBLIC_MOTIVATIONAL_QUOTES_API_KEY;
-console.log("motivational key", MOTIVATIONAL_KEY)
+
 
 export const useQuoteFetch = () => {
   const [quote, setQuote] = useState('');
@@ -32,9 +32,9 @@ export const useQuoteFetch = () => {
       const fetchedQuote = quoteData.quote;
       setQuote(fetchedQuote);
 
-      console.log('Fetched quote:', fetchedQuote);
+      
 
-      const imageResponse = await generateImage(fetchedQuote.text);
+      const imageResponse = await generateImage();
       if (imageResponse?.url) {
         setImageUrl(imageResponse.url);
       }
@@ -44,7 +44,7 @@ export const useQuoteFetch = () => {
     }
   };
 
-  const generateImage = async (quoteText: string) => {
+  const generateImage = async () => {
     try {
       const response = await fetch(
         'https://api.openai.com/v1/images/generations',
@@ -55,9 +55,9 @@ export const useQuoteFetch = () => {
             Authorization: `Bearer ${OPENAI_API_KEY}`,
           },
           body: JSON.stringify({
-            prompt: `A beautiful image of a motivational quote: ${quoteText}`,
+            prompt: `A natural, serene illustration of a beautiful landscape, delicate flower, or a clear sky that evokes a nostalgic, calming feeling. The image should convey peacefulness and beauty without any text.`,
             n: 1,
-            size: '1024x1024',
+            size: '256x256',
           }),
         }
       );
