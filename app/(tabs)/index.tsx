@@ -1,34 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import React from 'react';
+import { StyleSheet, Image } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { HelloWave } from '@/components/HelloWave';
+import { useQuoteFetch } from '@/hooks/useQuoteFetch';
 
 export default function HomeScreen() {
-  const [quote, setQuote] = useState({ text: '', author: '' });
-
-  useEffect(() => {
-    fetchRandomQuote();
-  }, []);
-
-  const fetchRandomQuote = async () => {
-    try {
-      const response = await fetch('https://api.quotable.io/random');
-      const data = await response.json();
-      setQuote({ text: data.content, author: data.author });
-    } catch (error) {
-      console.error('Error fetching quote:', error);
-      setQuote({ text: 'Failed to fetch quote', author: 'Error' });
-    }
-  };
-
+  const { quote, fetchQuoteAndImage, imageUrl } = useQuoteFetch();
+  
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={<Ionicons size={310} name="chatbubble-ellipses" style={styles.headerImage} />}
+      headerImage={imageUrl ? (
+        <Image source={{ uri: imageUrl }} style={styles.headerImage} />
+      ) : (
+        <Ionicons size={310} name="chatbubble-ellipses" style={styles.headerIcon} />
+      )}
     >
       <ThemedView style={styles.container}>
         <ThemedView style={styles.welcomeContainer}>
@@ -44,7 +34,7 @@ export default function HomeScreen() {
         </ThemedView>
 
         <ThemedView style={styles.buttonContainer}>
-          <ThemedText type="link" onPress={fetchRandomQuote}>
+          <ThemedText type="link" onPress={fetchQuoteAndImage}>
             Get New Quote
           </ThemedText>
         </ThemedView>
@@ -59,6 +49,11 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   headerImage: {
+    width: '100%',
+    height: 310,
+    resizeMode: 'cover', // Makes sure the image covers the header space properly
+  },
+  headerIcon: {
     color: '#808080',
     bottom: -90,
     left: -35,
