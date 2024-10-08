@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 const OPENAI_API_KEY = process.env.EXPO_PUBLIC_OPENAI_API_KEY;
@@ -10,13 +11,27 @@ export const useQuoteFetch = () => {
     fetchQuoteAndImage();
   }, []);
 
+  const options = {
+  method: 'GET',
+  url: 'https://quotes-inspirational-quotes-motivational-quotes.p.rapidapi.com/quote',
+  params: {
+    token: 'ipworld.info'
+  },
+  headers: {
+    'x-rapidapi-key': '3ba56a3f91mshb2e179a24c6432fp196d5bjsne12120bfe043',
+    'x-rapidapi-host': 'quotes-inspirational-quotes-motivational-quotes.p.rapidapi.com'
+  }
+};
+
   const fetchQuoteAndImage = async () => {
     try {
       // Fetch a random quote
-      const quoteResponse = await fetch('https://zenquotes.io/api/random');
-      const quoteData = await quoteResponse.json();
-      const fetchedQuote = { text: quoteData[0].q, author: quoteData[0].a };
+      const quoteResponse = await axios.request(options)
+      const quoteData = quoteResponse.data;
+      const fetchedQuote = { text: quoteData.text, author: quoteData.author };
       setQuote(fetchedQuote);
+
+      console.log('Fetched quote:', fetchedQuote);
 
       const imageResponse = await generateImage(fetchedQuote.text);
       if (imageResponse?.url) {
