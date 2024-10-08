@@ -28,9 +28,8 @@ export default function HomeScreen() {
 
         <ThemedView style={styles.quoteContainer}>
           <ThemedText type="defaultSemiBold" style={styles.quoteText}>
-            "{quote.text}"
+            {quote}
           </ThemedText>
-          <ThemedText style={styles.authorText}>- {quote.author}</ThemedText>
         </ThemedView>
 
         <ThemedView style={styles.buttonContainer}>

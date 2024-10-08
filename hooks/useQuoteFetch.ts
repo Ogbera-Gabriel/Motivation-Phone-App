@@ -2,33 +2,34 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 const OPENAI_API_KEY = process.env.EXPO_PUBLIC_OPENAI_API_KEY;
+const MOTIVATIONAL_KEY = process.env.EXPO_PUBLIC_MOTIVATIONAL_QUOTES_API_KEY;
+console.log("motivational key", MOTIVATIONAL_KEY)
 
 export const useQuoteFetch = () => {
-  const [quote, setQuote] = useState({ text: '', author: '' });
+  const [quote, setQuote] = useState('');
   const [imageUrl, setImageUrl] = useState('');
+
+  const id = Math.floor(Math.random() * 623) + 1;
 
   useEffect(() => {
     fetchQuoteAndImage();
   }, []);
 
   const options = {
-  method: 'GET',
-  url: 'https://quotes-inspirational-quotes-motivational-quotes.p.rapidapi.com/quote',
-  params: {
-    token: 'ipworld.info'
-  },
-  headers: {
-    'x-rapidapi-key': '3ba56a3f91mshb2e179a24c6432fp196d5bjsne12120bfe043',
-    'x-rapidapi-host': 'quotes-inspirational-quotes-motivational-quotes.p.rapidapi.com'
-  }
-};
+    method: 'GET',
+    url: `https://motivational-content.p.rapidapi.com/quotes/${id}`,
+    headers: {
+      'x-rapidapi-key': `${MOTIVATIONAL_KEY}`,
+      'x-rapidapi-host': 'motivational-content.p.rapidapi.com',
+    },
+  };
 
   const fetchQuoteAndImage = async () => {
     try {
       // Fetch a random quote
-      const quoteResponse = await axios.request(options)
+      const quoteResponse = await axios.request(options);
       const quoteData = quoteResponse.data;
-      const fetchedQuote = { text: quoteData.text, author: quoteData.author };
+      const fetchedQuote = quoteData.quote;
       setQuote(fetchedQuote);
 
       console.log('Fetched quote:', fetchedQuote);
@@ -39,7 +40,7 @@ export const useQuoteFetch = () => {
       }
     } catch (error) {
       console.error('Error fetching quote or generating image:', error);
-      setQuote({ text: 'Failed to fetch quote', author: 'Error' });
+      setQuote('Error fetching quote');
     }
   };
 
@@ -54,7 +55,7 @@ export const useQuoteFetch = () => {
             Authorization: `Bearer ${OPENAI_API_KEY}`,
           },
           body: JSON.stringify({
-            prompt: `An artistic illustration of "${quoteText}"`,
+            prompt: `A beautiful image of a motivational quote: ${quoteText}`,
             n: 1,
             size: '1024x1024',
           }),
