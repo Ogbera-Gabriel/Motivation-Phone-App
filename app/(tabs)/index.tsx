@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { StyleSheet, Image, View, TouchableOpacity } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 //import Share from 'react-native-share';
@@ -15,6 +15,7 @@ export default function HomeScreen() {
   const { quote, fetchQuoteAndImage } = useQuoteFetch();
   const imageUrl = require('@/assets/images/sunflower.jpg');
   const viewShotRef = useRef<ViewShot>(null);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   // const handleShare = async () => {
   //   if (viewShotRef.current && viewShotRef.current.capture) {
@@ -61,13 +62,27 @@ export default function HomeScreen() {
         </ThemedView>
 
         <ThemedView style={styles.buttonContainer}>
-          <ThemedText type="link" onPress={fetchQuoteAndImage}> {/*  change name of hook */}
-            Get New Quote
-          </ThemedText>
-          <TouchableOpacity onPress={() => {}} style={styles.shareButton}>
-            <Ionicons name="share-outline" size={24} color="#007AFF" />
-            <ThemedText type="link" style={styles.shareButtonText}>
-              Share
+          <TouchableOpacity onPress={fetchQuoteAndImage} style={styles.button}>
+            <Ionicons name="refresh-outline" size={18} color="#FFFFFF" />
+            <ThemedText style={styles.buttonText}>New</ThemedText>
+          </TouchableOpacity>
+          
+          <TouchableOpacity onPress={() => {}} style={styles.button}>
+            <Ionicons name="share-outline" size={18} color="#FFFFFF" />
+            <ThemedText style={styles.buttonText}>Share</ThemedText>
+          </TouchableOpacity>
+          
+          <TouchableOpacity 
+            onPress={() => setIsFavorite(!isFavorite)} 
+            style={[styles.button, isFavorite && styles.favoriteButton]}
+          >
+            <Ionicons 
+              name={isFavorite ? "heart" : "heart-outline"} 
+              size={18} 
+              color="#FFFFFF" 
+            />
+            <ThemedText style={styles.buttonText}>
+              {isFavorite ? 'Liked' : 'Like'}
             </ThemedText>
           </TouchableOpacity>
         </ThemedView>
@@ -101,10 +116,36 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 50, // Increased space between image and buttons
   },
   buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 50,
+    width: '100%',
+    paddingHorizontal: 10,
+    marginTop: 50, // Added top margin to the button container
+  },
+  button: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#1DA1F2', // Twitter blue
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 9999, // Very high value for pill shape
+    minWidth: 80,
+    flex: 1, // Allow buttons to grow
+    marginHorizontal: 5, // Add horizontal margin for gaps
+  },
+  buttonText: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    fontWeight: '600',
+    marginLeft: 4,
+  },
+  favoriteButton: {
+    backgroundColor: '#E0245E', // Twitter's like button color
   },
   shareButton: {
     flexDirection: 'row',
