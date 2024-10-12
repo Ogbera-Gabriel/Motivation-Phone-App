@@ -15,11 +15,11 @@ export default function TabTwoScreen() {
   const { selectedImage, setSelectedImage } = useImageContext();
 
   const images = [
-    'https://via.placeholder.com/100x100?text=Image+1',
-    'https://via.placeholder.com/100x100?text=Image+2',
-    'https://via.placeholder.com/100x100?text=Image+3',
-    'https://via.placeholder.com/100x100?text=Image+4',
-    'https://via.placeholder.com/100x100?text=Image+5',
+    require('@/assets/images/sunset.jpg'),
+    require('@/assets/images/nature.jpg'),
+    require('@/assets/images/river.jpg'),
+    require('@/assets/images/storm.jpg'),
+    require('@/assets/images/autumn.jpg'),
     require('@/assets/images/sunflower.jpg'),
   ];
 

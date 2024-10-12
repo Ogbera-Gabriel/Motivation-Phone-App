@@ -3,10 +3,9 @@ import { useEffect, useState } from 'react';
 
 const MOTIVATIONAL_KEY = process.env.EXPO_PUBLIC_MOTIVATIONAL_QUOTES_API_KEY;
 
-
 export const useQuoteFetch = () => {
   const [quote, setQuote] = useState('');
-  
+  const [isLoading, setIsLoading] = useState(false);
 
   const id = Math.floor(Math.random() * 623) + 1;
 
@@ -24,18 +23,19 @@ export const useQuoteFetch = () => {
   };
 
   const fetchQuoteAndImage = async () => {
+    setIsLoading(true);
     try {
-      // Fetch a random quote
       const quoteResponse = await axios.request(options);
       const quoteData = quoteResponse.data;
       const fetchedQuote = quoteData.quote;
       setQuote(fetchedQuote);
-      
     } catch (error) {
-      console.error('Error fetching quote or generating image:', error);
+      console.error('Error fetching quote:', error);
       setQuote('Error fetching quote');
+    } finally {
+      setIsLoading(false);
     }
   };
 
-    return { quote, fetchQuoteAndImage };
+  return { quote, isLoading, fetchQuoteAndImage };
 };

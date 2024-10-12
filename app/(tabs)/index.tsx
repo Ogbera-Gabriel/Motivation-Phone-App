@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { StyleSheet, Image, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Image, View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 //import Share from 'react-native-share';
 import ViewShot from 'react-native-view-shot';
@@ -13,31 +13,10 @@ import { ShareableContent } from '@/components/ShareableQuotes';
 import { useImageContext } from '@/hooks/imageContext';
 
 export default function HomeScreen() {
-  const { quote, fetchQuoteAndImage } = useQuoteFetch();
+  const { quote, isLoading, fetchQuoteAndImage } = useQuoteFetch();
   const { selectedImage } = useImageContext();
   const viewShotRef = useRef<ViewShot>(null);
   const [isFavorite, setIsFavorite] = useState(false);
-
-  // const handleShare = async () => {
-  //   if (viewShotRef.current && viewShotRef.current.capture) {
-  //     try {
-  //       const uri = await viewShotRef.current.capture();
-  //       if (uri) {
-  //         const shareOptions = {
-  //           title: 'Share Quote',
-  //           message: quote,
-  //           url: uri,
-  //           type: 'image/png',
-  //         };
-  //         await Share.open(shareOptions);
-  //       }
-  //     } catch (error) {
-  //       console.error('Error sharing:', error);
-  //     }
-  //   } else {
-  //     console.warn('ViewShot reference is null or undefined');
-  //   }
-  // };
 
   return (
     <ParallaxScrollView
@@ -58,12 +37,19 @@ export default function HomeScreen() {
 
         <ThemedView style={styles.viewShotContainer}>
           <ViewShot ref={viewShotRef} options={{ format: 'png', quality: 0.9 }}>
-            <ShareableContent quote={quote} imageUrl={selectedImage} />
+            {isLoading ? (
+              <ThemedView style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#0000ff" />
+                <ThemedText>Loading quote...</ThemedText>
+              </ThemedView>
+            ) : (
+              <ShareableContent quote={quote} imageUrl={selectedImage} />
+            )}
           </ViewShot>
         </ThemedView>
 
         <ThemedView style={styles.buttonContainer}>
-          <TouchableOpacity onPress={fetchQuoteAndImage} style={styles.button}>
+          <TouchableOpacity onPress={fetchQuoteAndImage} style={styles.button} disabled={isLoading}>
             <Ionicons name="refresh-outline" size={18} color="#FFFFFF" />
             <ThemedText style={styles.buttonText}>New</ThemedText>
           </TouchableOpacity>
@@ -155,5 +141,11 @@ const styles = StyleSheet.create({
   },
   shareButtonText: {
     marginLeft: 5,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 200, // Adjust this value to match the height of your ShareableContent
   },
 });

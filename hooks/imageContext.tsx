@@ -8,7 +8,7 @@ type ImageContextType = {
 const ImageContext = createContext<ImageContextType | undefined>(undefined);
 
 export const ImageProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const [selectedImage, setSelectedImage] = useState(require('@/assets/images/sunflower.jpg'));
+  const [selectedImage, setSelectedImage] = useState(require('@/assets/images/sunset.jpg'));
 
   return (
     <ImageContext.Provider value={{ selectedImage, setSelectedImage }}>
