@@ -10,10 +10,11 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { HelloWave } from '@/components/HelloWave';
 import { useQuoteFetch } from '@/hooks/useQuoteFetch';
 import { ShareableContent } from '@/components/ShareableQuotes';
+import { useImageContext } from '@/hooks/imageContext';
 
 export default function HomeScreen() {
   const { quote, fetchQuoteAndImage } = useQuoteFetch();
-  const imageUrl = require('@/assets/images/sunflower.jpg');
+  const { selectedImage } = useImageContext();
   const viewShotRef = useRef<ViewShot>(null);
   const [isFavorite, setIsFavorite] = useState(false);
 
@@ -57,7 +58,7 @@ export default function HomeScreen() {
 
         <ThemedView style={styles.viewShotContainer}>
           <ViewShot ref={viewShotRef} options={{ format: 'png', quality: 0.9 }}>
-            <ShareableContent quote={quote} imageUrl={imageUrl} />
+            <ShareableContent quote={quote} imageUrl={selectedImage} />
           </ViewShot>
         </ThemedView>
 

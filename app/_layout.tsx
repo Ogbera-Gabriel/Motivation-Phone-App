@@ -11,6 +11,7 @@ import 'react-native-reanimated';
 import { ConvexProvider, ConvexReactClient } from 'convex/react';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { ImageProvider } from '@/hooks/imageContext';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -38,10 +39,12 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <ConvexProvider client={convex}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
+        <ImageProvider>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+        </ImageProvider>
       </ConvexProvider>
     </ThemeProvider>
   );
