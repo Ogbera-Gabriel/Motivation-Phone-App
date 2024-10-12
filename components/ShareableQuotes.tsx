@@ -56,5 +56,5 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     color: 'white', // Ensure text is visible on the image
   },
-  // Remove placeholderImage style as it's not used
+ 
 });

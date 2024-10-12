@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 50, // Increased space between image and buttons
+    marginBottom: 50, 
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -111,19 +111,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     paddingHorizontal: 10,
-    marginTop: 50, // Added top margin to the button container
+    marginTop: 50, 
   },
   button: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#1DA1F2', // Twitter blue
+    backgroundColor: '#1DA1F2', 
     paddingVertical: 8,
     paddingHorizontal: 12,
-    borderRadius: 9999, // Very high value for pill shape
+    borderRadius: 9999, 
     minWidth: 80,
-    flex: 1, // Allow buttons to grow
-    marginHorizontal: 5, // Add horizontal margin for gaps
+    flex: 1, 
+    marginHorizontal: 5, 
   },
   buttonText: {
     color: '#FFFFFF',
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
   favoriteButton: {
-    backgroundColor: '#E0245E', // Twitter's like button color
+    backgroundColor: '#E0245E', 
   },
   shareButton: {
     flexDirection: 'row',
@@ -146,6 +146,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    height: 200, // Adjust this value to match the height of your ShareableContent
+    height: 200, 
   },
 });

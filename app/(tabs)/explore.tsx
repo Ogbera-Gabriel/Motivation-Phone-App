@@ -113,13 +113,13 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     width: '100%',
     marginVertical: 20,
-    paddingLeft: '15%', // Adjusted left padding to accommodate wider images
+    paddingLeft: '15%', 
   },
   imageWrapper: {
     position: 'relative',
-    width: '45%', // Increased width to make images wider
-    aspectRatio: 3/4, // Maintained the taller aspect ratio
-    margin: '2%', // Slightly reduced margin to maintain spacing
+    width: '45%', 
+    aspectRatio: 3/4, 
+    margin: '2%', 
   },
   image: {
     width: '100%',
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
   selectedImageContainer: {
     alignItems: 'center',
     marginTop: 20,
-    marginBottom: 40, // Add some bottom margin for better scrolling
+    marginBottom: 40, 
   },
   selectedImageText: {
     fontSize: 16,
